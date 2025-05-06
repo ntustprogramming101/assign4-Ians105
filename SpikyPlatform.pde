@@ -6,17 +6,23 @@ class SpikyPlatform extends Platform {
   SpikyPlatform(float tempX, float tempY) {
     super(tempX, tempY);
   }
+  void playPlatformSound() {
+    spikyPlatformSound.play();
+  }
 
   void interact(Player player) {
-    player.ySpeed = 0;
-    player.y = y - player.h + player.feetOffset;
-    player.y -= speed;
+    super.interact(player);
 
     if (player.damaged==false && isCollided==false) {
       player.health-=1;
       player.damaged=true;
       player.damageTimer=DAMAGE_BLINK_DURATION;
       isCollided = true;
+    }
+
+    if (!playedSound) {
+      playedSound=true;
+      playPlatformSound();
     }
   }
 

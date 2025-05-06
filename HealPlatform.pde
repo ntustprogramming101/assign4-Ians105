@@ -9,14 +9,21 @@ class HealPlatform extends Platform {
     super(tempX, tempY);
   }
 
+  void playPlatformSound() {
+    healSound.play();
+  }
+
   void interact(Player player) {
-    player.ySpeed = 0;
-    player.y = y - player.h + player.feetOffset;
-    player.y -= speed;
+    super.interact(player);
 
     if (!isTaken) {
       isTaken = true;
       player.health+=1;
+    }
+
+    if (!playedSound) {
+      playedSound=true;
+      playPlatformSound();
     }
   }
 

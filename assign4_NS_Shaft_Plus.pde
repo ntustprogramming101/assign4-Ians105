@@ -17,6 +17,9 @@ Platform[] platforms = new Platform[NUM_PLATFORMS]; // Array to store all platfo
 Player player; // The player object
 PImage[][] playerSprites = new PImage[3][]; // Array to store player sprites
 // 1st[]: sprite index (0=idle, 1=left, 2=right) ; 2nd[]: animated frame index
+PImage fried;
+float friedImageY = height/2, friedImageX = width/2;
+float friedW = 30, friedH = 60;
 float bgY1 = 0, bgY2; // Vertical positions of the two background images for scrolling
 PImage bg; // Background image
 PImage platformImage; // Images for platforms
@@ -61,6 +64,8 @@ void loadAssets() {
   winImageHeight = winImage.height; // Get the height of the win image
   winImageY = height; // set the win image off-screen
 
+  fried = loadImage("fried.png");
+
   // Initialize the playerSprites array with subarrays for different movement states
   playerSprites[0] = new PImage[1]; // idle state (1 frame)
   playerSprites[1] = new PImage[2]; // moving left (2 frames for animation)
@@ -104,20 +109,20 @@ void initializePlatforms() {
 void draw() {
   scrollBackground(); // Scroll the background continuously
 
-  switch (gameState){
-    case GAME_RUN:
-      runGame();
-      break;
-    case GAME_WIN:
-      winGame();
-      break;
-    case GAME_OVER:
-      endGame();
-      break;
+  switch (gameState) {
+  case GAME_RUN:
+    runGame();
+    break;
+  case GAME_WIN:
+    winGame();
+    break;
+  case GAME_OVER:
+    endGame();
+    break;
   }
 }
 
-void runGame(){
+void runGame() {
   for (int i = 0; i < platforms.length; i++) {
     platforms[i].update(); // Update the platform's position
     // Handle recycling
@@ -149,20 +154,19 @@ void runGame(){
 Platform assignRandomPlatform(float x, float y) {
   int typeIndex = int(random(5)); // Randomly select a type (0 = normal, 1 = bouncy, 2 = spiky, 3 = fragile, 4 = healing)
   switch (typeIndex) {
-    case 0:
-      return new Platform(x, y); // Normal platform
-    case 1:
-      return new BouncyPlatform(x, y); // Bouncy platform
-    case 2:
-      return new SpikyPlatform(x, y); // Spiky platform
-    case 3:
-      return new FragilePlatform(x, y); // Fragile platform
-    case 4:
-      return new HealPlatform(x, y); // Healing platform
-    default :
-      return new Platform(x, y); // Fallback to normal platform
+  case 0:
+    return new Platform(x, y); // Normal platform
+  case 1:
+    return new BouncyPlatform(x, y); // Bouncy platform
+  case 2:
+    return new SpikyPlatform(x, y); // Spiky platform
+  case 3:
+    return new FragilePlatform(x, y); // Fragile platform
+  case 4:
+    return new HealPlatform(x, y); // Healing platform
+  default :
+    return new Platform(x, y); // Fallback to normal platform
   }
-  
 }
 
 // Background Scrolling
@@ -194,7 +198,7 @@ void winGame() {
   if (player.y < height - winImageHeight / 2) {
     player.display(); // Display the player on the screen
   }
-  displayWinMessage(); // Show a congratulatory message 
+  displayWinMessage(); // Show a congratulatory message
 }
 // Handles the end of the game
 void endGame() {
@@ -211,6 +215,8 @@ void displayWinImage() {
     winImageY = height - winImageHeight; // Stop at the bottom of the screen
   }
   image(winImage, 0, winImageY, width, winImageHeight); // Displays the win image at its current position
+
+  image(fried, mouseX-(friedW/2), mouseY-(friedH/2), friedW, friedH);
 }
 
 // Displays a game-over message when the player loses
