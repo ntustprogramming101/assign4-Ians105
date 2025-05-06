@@ -95,7 +95,7 @@ void initializePlatforms() {
   // stage 1-1: generate 10 platforms with random positions on the screen
   for (int i = 0; i < NUM_PLATFORMS; i++) {
     // you need to change this line to create a new platform object with random horizontal positions, while distributed evenly in vertical space
-    platforms[i] = assignRandomPlatform(random(width), i * (height / NUM_PLATFORMS));
+    platforms[i] = assignRandomPlatform(random(width-80), i * (height / NUM_PLATFORMS));
   }
   // End of stage 1-1
 }
